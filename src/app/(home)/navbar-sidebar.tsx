@@ -39,6 +39,7 @@ export const NavbarSidebar = ({
                         </SheetTitle>
                     </div>
                 </SheetHeader>
+                
                 <ScrollArea className="flex flex-col overflow-y-auto h-full pb-2">
                     <div className = "h-full text-left-4">
                         {items.map((item) => (
@@ -51,8 +52,7 @@ export const NavbarSidebar = ({
                                 {item.children}
                             </Link>
                         ))}
-                    </div>
-                    
+                    </div>                    
 
                     <div className="border-t mt-2 pt-2">
                         <Link
