@@ -10,6 +10,7 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
+  
   collections: {
     users: User;
     media: Media;
