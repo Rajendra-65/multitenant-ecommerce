@@ -1,3 +1,5 @@
+import { CategoryDropdown } from "./category-dropdown"
+
 interface CategoriesProps {
     data : any
 }
@@ -7,7 +9,18 @@ export const Categories = ({
 }:CategoriesProps) =>{
     return(
         <div>
-            Categories : {JSON.stringify(data,null,2)}
+            {
+                data.map((category:any) => (
+                    <div
+                        key={category.id}
+                    >
+                        <CategoryDropdown
+                            category = {category}
+                            isActive = {false}
+                            isNavigationHovered = {false}
+                        />
+                    </div>
+            ))}  
         </div>
     )
 }
