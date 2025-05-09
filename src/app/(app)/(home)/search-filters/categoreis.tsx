@@ -1,7 +1,8 @@
+import { CustomCategory } from "../types"
 import { CategoryDropdown } from "./category-dropdown"
 
 interface CategoriesProps {
-    data : any
+    data : CustomCategory[]
 }
 
 export const Categories = ({
@@ -11,7 +12,7 @@ export const Categories = ({
         <div className="relative w-full">
             <div className="flex flex-nowrap items-center">
                 {
-                    data.map((category:any) => (
+                    data.map((category) => (
                         <div
                             key={category.id}
                         >

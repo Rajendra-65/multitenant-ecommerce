@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import { Footer } from "./footer"
 import { Navbar } from "./navbar"
 import { SearchFilters } from "./search-filters"
+import { CustomCategory } from './types'
 
 
 interface Props{
@@ -27,7 +28,7 @@ const Layout = async ({children}: Props) => {
         },
       });
 
-      const formattedData = data.docs.map(doc => ({
+      const formattedData:CustomCategory[] = data.docs.map(doc => ({
         id: doc.id,
         name: doc.name,
         slug: doc.slug,
