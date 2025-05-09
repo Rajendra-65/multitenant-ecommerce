@@ -20,8 +20,8 @@ export const SubcategoryMenu = ({
         return null;
     }
 
-    // const backgroundColor = category.color || "F5F5F5";
-    const backgroundColor = "e0cda7";
+    const backgroundColor = category.color || "F5F5F5";
+    // const backgroundColor = "e0cda7";
 
 
     return (
