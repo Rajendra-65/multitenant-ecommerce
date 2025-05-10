@@ -5,6 +5,7 @@ import { useState,useRef } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
 import { SubcategoryMenu } from "./subcategorymenu";
 import { CustomCategory } from "../types";
+import Link from "next/link";
 
 interface Props{
     category: CustomCategory;
@@ -46,7 +47,12 @@ export const CategoryDropdown = ({
                         isOpen && "bg-white border-primary shadow-[4px_4px_0px_0px_rgba(0,0,01)] -translate-x-[4px] -translate-y-[4px]"
                     )}
                 >
-                    {category.name}
+                    <Link
+                        
+                        href={`/${category.slug === "all" ? "" : category.slug}`}
+                    >
+                        {category.name}
+                    </Link>
                     
                 </Button>
                 {category.subcategories && category.subcategories.length >0 &&(
