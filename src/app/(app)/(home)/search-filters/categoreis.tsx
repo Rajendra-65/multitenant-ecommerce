@@ -1,8 +1,13 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { CustomCategory } from "../types"
 import { CategoryDropdown } from "./category-dropdown"
 import { useState,useRef,useEffect } from "react"
+import { cn } from "@/lib/utils"
+import { ListFilterIcon } from "lucide-react"
+import { CategoriesSidebar } from "./CategoriesSidebar"
+
 interface CategoriesProps {
     data : CustomCategory[]
 }
@@ -11,7 +16,7 @@ export const Categories = ({
     data
 }:CategoriesProps) =>{
     const containerRef = useRef<HTMLDivElement>(null);
-    const measureRef = useRef<HTMLDivEleemnt>(null);
+    const measureRef = useRef<HTMLDivElement>(null);
     const viewAllRef = useRef<HTMLDivElement>(null);
 
     const [visibleCount, setVisibleCount] = useState(data.length);
@@ -35,7 +40,7 @@ export const Categories = ({
             let totalWidth = 0;
             let visible = 0;
             
-            for (const items of item){
+            for (const item of items){
                 const width = item.getBoundingClientRect().width;
 
                 if(totalWidth + width > availableWidth) break;
@@ -50,14 +55,29 @@ export const Categories = ({
         const resizeObserver = new ResizeObserver(calculateVisible)
         resizeObserver.observe(containerRef.current!);
 
-        return () => resizeObserver.
+        return () => resizeObserver.disconnect()
 
 
-    },[])
+    },[data.length])
 
     return(
         <div className="relative w-full">
-            <div className="flex flex-nowrap items-center">
+            
+            {/* hidden ref to measure all items */}
+            
+            {/* Categories Sidebar */}
+
+            <CategoriesSidebar
+                open = {isSidebarOpen}
+                onOpenChange = {setIsSidebarOpen}
+                data= {data}
+            />
+
+            <div 
+                ref = {measureRef}
+                className="absolute opacity-0 pointer-events-none flex"
+                style={{position:"fixed", top: -9999 , left: -9999}}
+            >
                 {
                     data.map((category) => (
                         <div
@@ -70,6 +90,46 @@ export const Categories = ({
                             />
                         </div>
                 ))}
+            </div>
+
+            
+            {/* Visible Items */}
+            
+            <div 
+                ref = {containerRef}
+
+                className="flex flex-nowrap items-center"
+                onMouseEnter ={()=> setIsAnyHovered(true)}
+                onMouseLeave = {()=> setIsAnyHovered(false)}
+            >
+                {
+                    data.slice(0,visibleCount).map((category) => (
+                        <div
+                            key={category.id}
+                        >
+                            <CategoryDropdown
+                                category = {category}
+                                isActive = {activeCategory === category.slug}
+                                isNavigationHovered = {false}
+                            />
+                        </div>
+                ))}
+
+                <div
+                    ref={viewAllRef} 
+                    className="shrink-0"
+                >
+                    <Button
+                        className={cn(
+                            "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
+                            isActiveCategoryHidden && !isAnyHovered && "bg-white border-primary",
+                        )}
+                        onClick={()=>setIsSidebarOpen(true)}
+                    >
+                        View All
+                        <ListFilterIcon className="ml-2"/>
+                    </Button>
+                </div>
             </div>
         </div>
     )
