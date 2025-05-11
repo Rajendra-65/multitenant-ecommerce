@@ -4,6 +4,7 @@ import { Footer } from "./footer"
 import { Navbar } from "./navbar"
 import { SearchFilters } from "./search-filters"
 import { CustomCategory } from './types'
+import { Category } from '@/payload-types'
 
 
 interface Props{
@@ -17,7 +18,7 @@ const Layout = async ({children}: Props) => {
       })
     
       const data = await payload.find({
-        // @ts-expect-error djjjj
+        
         collection:"Categories",
         depth : 1, // Populate Subcategories
         pagination : false,
@@ -30,19 +31,13 @@ const Layout = async ({children}: Props) => {
       });
 
       const formattedData:CustomCategory[] = data.docs.map(doc => ({
-        id: doc.id,
-        name: doc.name,
-        slug: doc.slug,
-        color: doc.color,
-        createdAt: doc.createdAt,
-        updatedAt: doc.updatedAt,
-        subcategories: (doc.subcategores?.docs ?? []).map(sub => ({
-          id: sub.id,
-          name: sub.name,
-          slug: sub.slug,
-          color: sub.color,
+        ...doc,
+        subcategories : (doc.subcategores?.docs ?? []).map((doc)=>({
+          ...(doc as Category),
+          subcategores:undefined
         }))
       }));
+
       
    console.log(data,formattedData)
 
