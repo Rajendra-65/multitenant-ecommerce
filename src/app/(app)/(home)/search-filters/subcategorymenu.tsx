@@ -1,9 +1,9 @@
-
-import Link from "next/link";
-import { CustomCategory } from "../types";
+import Link from "next/link"
+import { CategoriesGetmanyOutput } from "@/modules/categories/types";
+import { Category } from "@/payload-types";
 
 interface SubcategoryMenuProps {
-    category: CustomCategory;
+    category: CategoriesGetmanyOutput[1];
     isOpen: boolean;
     position: { top: number; left: number }
 }
@@ -42,7 +42,7 @@ export const SubcategoryMenu = ({
                 }}
                 className="w-60 text-black rounded-md overflow-hidden border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-y-[2px]"
             >
-                {category.subcategories?.map((subcategory: CustomCategory) => (
+                {category.subcategories?.map((subcategory: Category) => (
                     <Link
                         key={subcategory.slug}
                         href={`/${category.slug}/${subcategory.slug}`}
