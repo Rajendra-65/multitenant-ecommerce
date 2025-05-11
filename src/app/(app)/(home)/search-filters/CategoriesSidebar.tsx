@@ -7,27 +7,27 @@ import {
     SheetHeader,
     SheetTitle
 } from "@/components/ui/sheet"
-
-import { CustomCategory } from "../types";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { CategoriesGetmanyOutput } from "@/modules/categories/types";
 
 interface Props {
     open : boolean;
-    onOpenChange: (open:boolean) => void;
-    data: CustomCategory[] ; // Todo : Remove this later
+    onOpenChangeAction: (open:boolean) => void;
 }
 
 export const CategoriesSidebar = ({
     open,
-    onOpenChange,
-    data
+    onOpenChangeAction,
 }:Props) => {
-
+    const trpc = useTRPC();
+    const {data} = useQuery(trpc.categories.getMany.queryOptions())
     const router = useRouter()
 
-    const [parentCategories , setParentCategories] = useState<CustomCategory[]|null>(null)
-    const [selectedCategory , setSelectedCategory] = useState<CustomCategory | null>(null)
+    const [parentCategories , setParentCategories] = useState<CategoriesGetmanyOutput|null>(null)
+    const [selectedCategory , setSelectedCategory] = useState<CategoriesGetmanyOutput[1] | null>(null)
 
     // if we have parent categories show tose, otherwise show root
     const currentCategories = parentCategories ?? data ?? [];
@@ -42,12 +42,12 @@ export const CategoriesSidebar = ({
     const handleOpenChange = (open:boolean) =>{
         setSelectedCategory(null)
         setParentCategories(null)
-        onOpenChange(open)
+        onOpenChangeAction(open)
     }
 
-    const handleCategoryClick = (category:CustomCategory) => {
+    const handleCategoryClick = (category:CategoriesGetmanyOutput[1]) => {
         if(category.subcategories && category.subcategories.length >0){
-            setParentCategories(category.subcategories as CustomCategory[])
+            setParentCategories(category.subcategories as CategoriesGetmanyOutput)
             setSelectedCategory(category);
         } else {
             // This is a leaf category(no subcategories)
