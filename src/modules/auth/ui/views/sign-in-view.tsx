@@ -16,7 +16,7 @@ import {
 import Link from "next/link"
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils"
-import { useTRPC } from "@/trpc/client"
+
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
@@ -30,15 +30,29 @@ const poppins = Poppins({
 export const SignInView = () => {
     const router = useRouter()
 
-    const trpc = useTRPC()
-    const login = useMutation(trpc.auth.login.mutationOptions({
+    
+    const login = useMutation({
+        mutationFn: async(values:z.infer<typeof loginSchema>) =>{
+            const response = await fetch("/api/users/login",{
+                method: "POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values)
+            });
+
+            if(!response.ok){
+                const error = await response.json();
+                throw new Error(error.message || "Login Failed")
+            }
+        },
         onError:(error) =>{
             toast.error(error.message)
         },
         onSuccess:() =>{
             router.push("/")
         }
-    }))
+    })
 
     const form = useForm<z.infer<typeof loginSchema>>({
         mode: "all",
