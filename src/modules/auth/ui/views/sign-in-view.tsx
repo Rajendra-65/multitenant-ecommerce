@@ -1,4 +1,5 @@
 "use client"
+
 import z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,15 +13,15 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-
 import Link from "next/link"
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils"
-
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { loginSchema } from "../../schemas"
+import { useTRPC } from "@/trpc/client"
+import { useQueryClient } from "@tanstack/react-query" 
 
 const poppins = Poppins({
     subsets: ["latin"],
@@ -30,6 +31,8 @@ const poppins = Poppins({
 export const SignInView = () => {
     const router = useRouter()
 
+    const trpc = useTRPC()
+    const queryClient = useQueryClient()
     
     const login = useMutation({
         mutationFn: async(values:z.infer<typeof loginSchema>) =>{
@@ -49,7 +52,8 @@ export const SignInView = () => {
         onError:(error) =>{
             toast.error(error.message)
         },
-        onSuccess:() =>{
+        onSuccess: async () =>{
+            await queryClient.invalidateQueries(trpc.auth.session.queryFilter())
             router.push("/")
         }
     })
