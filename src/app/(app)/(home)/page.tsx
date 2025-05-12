@@ -9,7 +9,7 @@ export default function Home() {
  
   return(
     <div>
-      {JSON.stringify(data,null,2)}
+      {JSON.stringify(data?.user,null,2)}
     </div>
   )
 }

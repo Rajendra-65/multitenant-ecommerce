@@ -1,1 +1,1 @@
-export const AUTH_COOKIE = "funroad-raj-payload-token"
+export const AUTH_COOKIE = "payload-token"
