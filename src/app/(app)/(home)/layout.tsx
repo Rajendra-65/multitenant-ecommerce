@@ -4,6 +4,7 @@ import { Footer } from "./footer"
 import { Navbar } from "./navbar"
 import { SearchFilters } from "./search-filters"
 import { Suspense } from "react"
+import { Toaster } from "@/components/ui/sonner"
 
 
 interface Props{
@@ -31,6 +32,7 @@ const Layout = async ({children}: Props) => {
                 className="flex-1 bg-[#f4f4f0]"
             >
                 {children}
+                <Toaster/>
             </div>
             <Footer/>
         </div>
