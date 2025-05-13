@@ -9,6 +9,9 @@ import { usePathname } from "next/navigation";
 import { NavbarSidebar } from "./navbar-sidebar";
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
+
 
 const poppins = Poppins({
     subsets:["latin"],
@@ -51,6 +54,10 @@ export const Navbar = () =>{
     const pathName = usePathname()
     const [isSidebarOpen, setIsSidebarOpen ] = useState(false)
     
+    const trpc = useTRPC()
+    const session = useQuery(trpc.auth.session.queryOptions())
+
+
     return(
         <nav
             className = "h-20 flex border-b justify-between font-medium bg-white"
@@ -78,8 +85,21 @@ export const Navbar = () =>{
                     </NavbarItem>
                 ))}
             </div>
-
-            <div className = "hidden lg:flex">
+            
+            {session.data?.user ? (
+                <div className = "hidden lg:flex">
+                    <Button
+                        asChild
+                        variant="secondary"
+                        className = "border-l border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-pink-400 transition-colors text-lg"
+                    >
+                        <Link href="/admin"> 
+                            Dashboard
+                        </Link>
+                    </Button>
+                </div>
+            ):(
+                <div className = "hidden lg:flex">
                 <Button
                     asChild
                     variant="secondary"
@@ -98,6 +118,8 @@ export const Navbar = () =>{
                     </Link>
                 </Button>
             </div>
+            )}
+            
 
             <div className="lg:hidden flex items-center">
                 <Button

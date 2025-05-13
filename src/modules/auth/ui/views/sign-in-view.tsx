@@ -137,7 +137,7 @@ export const SignInView = () => {
                             variant = "ghost"
                             className = "bg-black text-white hover:bg-pink-400 hover: text-primary"
                         >
-                            Create Account
+                            Sign-in
                         </Button>
                     </form>
                 </Form>
