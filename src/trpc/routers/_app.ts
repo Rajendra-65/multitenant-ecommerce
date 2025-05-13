@@ -1,9 +1,11 @@
 import { authRouter } from '@/modules/auth/server/procedures';
 import { createTRPCRouter } from '../init';
 import { categoriesRouter } from '@/modules/categories/server/producers';
+import { productsRouter } from '@/modules/products/server/producers';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
+  products: productsRouter,
   categories:categoriesRouter
 });
 // export type definition of API

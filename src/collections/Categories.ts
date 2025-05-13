@@ -3,6 +3,10 @@ import type { CollectionConfig } from "payload";
 export const Categories : CollectionConfig = {
     slug: "Categories",
     
+    admin: {
+        useAsTitle : "name"
+    },
+    
     fields : [
         {
             name : "name",
@@ -24,7 +28,7 @@ export const Categories : CollectionConfig = {
             name: "parent",
             type: "relationship",
             relationTo : "Categories",
-            hasmany : false,
+            hasMany : false,
         },
         {
             name : "subcategores",
