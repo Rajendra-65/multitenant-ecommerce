@@ -1,3 +1,4 @@
+
 import { ProductList } from "@/modules/products/ui/components/product-list";
 import { getQueryClient,trpc } from "@/trpc/server";
 import { HydrationBoundary,dehydrate } from "@tanstack/react-query";
