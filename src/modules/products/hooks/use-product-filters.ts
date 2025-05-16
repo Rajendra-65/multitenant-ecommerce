@@ -12,5 +12,8 @@ export const params = {
 };
 
 export const useProductFilters = () => {
-  return useQueryStates(params);
+  return useQueryStates({
+    minPrice: parseAsString,
+    maxPrice: parseAsString
+  });
 };

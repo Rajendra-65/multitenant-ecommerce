@@ -23,13 +23,13 @@ const Page = async({params,searchParams}:Props) => {
 
     const {category} = await params;
     const filters = await loadProductFilters(searchParams)
-    console.log(category)
+    console.log("category",category)
     console.log(filters)
     const {minPrice, maxPrice} = filters
     console.log(minPrice,maxPrice)
 
     const queryClient = getQueryClient();
-
+    console.log("Hitted")
     void queryClient.prefetchQuery(trpc.products.getMany.queryOptions({
         category,
         ...filters
