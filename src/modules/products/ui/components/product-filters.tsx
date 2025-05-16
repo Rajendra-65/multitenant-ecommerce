@@ -7,7 +7,7 @@ interface ProductFilterProps{
     className? :string;
     children: React.ReactNode;
 }
-
+import { TagsFilter } from "./tags-filter";
 import { useState } from "react";
 import { PriceFilter } from "./price-filter";
 import { useProductFilters } from "../../hooks/use-product-filters";
@@ -48,6 +48,14 @@ export const ProductFilters = () => {
         return value != null
     }) 
 
+    const onCLear = () => {
+        setFilters({
+            minPrice: "",
+            maxPrice: "",
+            tags: []
+        })
+    }
+
     const onChange = (key: keyof typeof filters, value:unknown) => {
         setFilters({...filters,[key]:value})
     }
@@ -60,7 +68,7 @@ export const ProductFilters = () => {
                 <p className = "font-medium">Filters</p>
                 {hasAnyFilters && (
                     <button className="underline cursor-pointer"
-                    
+                    onClick={()=>onCLear()}
                     type = "button"
                 >
                     Clear
