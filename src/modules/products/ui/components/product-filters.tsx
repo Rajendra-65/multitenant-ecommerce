@@ -68,12 +68,18 @@ export const ProductFilters = () => {
                 )}
                 
             </div>
-            <ProductFilter title="price" className="border-b-0">
+            <ProductFilter title="price">
                 <PriceFilter
                     minPrice = {filters.minPrice}
                     maxPrice = {filters.maxPrice}
                     onMinPriceChange={(value)=> onChange("minPrice",value)}
                     onMaxPriceChange = {(value)=> onChange("maxPrice",value)}
+                />
+            </ProductFilter>
+            <ProductFilter title="tags" className="border-b-0">
+                <TagsFilter
+                    value = {filters.tags}
+                    onChange = {(value)=> onChange("tags",value)}   
                 />
             </ProductFilter>
         </div>
