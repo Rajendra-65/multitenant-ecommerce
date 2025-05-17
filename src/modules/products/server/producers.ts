@@ -5,13 +5,16 @@ import { Category } from "@/payload-types";
 
 export const productsRouter = createTRPCRouter({
     getMany: baseProcedure
+
     .input(
         z.object({
             category: z.string().nullable().optional(),
             minPrice : z.string().nullable().optional(),
-            maxPrice : z.string().nullable().optional()
+            maxPrice : z.string().nullable().optional(),
+            tags : z.array(z.string()).nullable().optional()
         }),
     )
+
     .query(async ({ctx,input}) => {
 
         const where : Where = {
@@ -68,9 +71,15 @@ export const productsRouter = createTRPCRouter({
                 }
             }
         }
+
+        if (input.tags && input.tags.length > 0){
+            console.log(input.tags)
+            where["tags.name"] = {
+                in: input.tags,
+            }
+        }
         
-        const data = await ctx.db.find({
-            
+        const data = await ctx.db.find({  
             collection: "products",
             depth: 1, // Populate category, image
             where
