@@ -3,7 +3,7 @@ import { parseAsArrayOf } from "nuqs";
 import {createLoader} from "nuqs/server"
 import { parseAsStringLiteral } from "nuqs/server";
 
-const sortValues = ["curated","trending","hot_and_new"] as const
+export const sortValues = ["curated","trending","hot_and_new"] as const
 
 
 export const params = {

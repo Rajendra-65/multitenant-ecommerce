@@ -1,7 +1,8 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
-import type { Where } from "payload";
+import type { Sort, Where } from "payload";
 import z from "zod"
 import { Category } from "@/payload-types";
+import { sortValues } from "../searchParams";
 
 export const productsRouter = createTRPCRouter({
     getMany: baseProcedure
@@ -11,7 +12,8 @@ export const productsRouter = createTRPCRouter({
             category: z.string().nullable().optional(),
             minPrice : z.string().nullable().optional(),
             maxPrice : z.string().nullable().optional(),
-            tags : z.array(z.string()).nullable().optional()
+            tags : z.array(z.string()).nullable().optional(),
+            sort : z.enum(sortValues).nullable().optional()
         }),
     )
 
@@ -19,6 +21,20 @@ export const productsRouter = createTRPCRouter({
 
         const where : Where = {
             price:{}
+        }
+
+        let sort : Sort = "-createdAt"
+
+        if(input.sort === "curated"){
+            sort = "name"
+        }
+
+        if(input.sort === "hot_and_new"){
+            sort = "-createdAt"
+        }
+
+        if(input.sort === "trending"){
+            sort = "+createdAt"
         }
 
         if(input.minPrice && input.maxPrice){
